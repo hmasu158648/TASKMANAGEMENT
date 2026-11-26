@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>タスク管理アプリ プロトタイプ</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="header">
+    <h1>タスク管理</h1>
+    <input id="search" type="search" placeholder="タイトルで検索" aria-label="タイトルで検索">
+    <select id="priorityFilter" aria-label="優先度の絞り込み">
+      <option value="all">優先度: すべて</option>
+      <option value="高">優先度: 高</option>
+      <option value="中">優先度: 中</option>
+      <option value="低">優先度: 低</option>
+    </select>
+  </header>
+
+  <div id="errorArea" class="error-area" role="alert" hidden></div>
+
+  <main>
+    <p id="noResult" class="no-result" hidden>該当するカードはありません</p>
+    <div id="board" class="board"></div>
+  </main>
+
+  <footer class="footer">
+    これは画面イメージ確認用のプロトタイプです(サーバー・DB には接続していません。データはこのブラウザ内に保存されます)。
+    <button id="demoError" type="button" class="link-btn">エラー表示を試す</button>
+    <button id="reset" type="button" class="link-btn">サンプルに初期化</button>
+  </footer>
+
+  <!-- カード入力(追加・編集) -->
+  <dialog id="cardDialog">
+    <form id="cardForm" novalidate>
+      <h2 id="cardDialogTitle">カードを追加</h2>
+      <label>タイトル(必須)
+        <input id="cardTitle" type="text">
+      </label>
+      <p id="cardTitleError" class="field-error" hidden>タイトルを入力してください</p>
+      <label>説明文
+        <textarea id="cardDesc" rows="3"></textarea>
+      </label>
+      <label>優先度
+        <select id="cardPriority">
+          <option value="高">高</option>
+          <option value="中" selected>中</option>
+          <option value="低">低</option>
+        </select>
+      </label>
+      <label>期限日
+        <input id="cardDue" type="date">
+      </label>
+      <div class="dialog-actions">
+        <button type="button" id="cardCancel">キャンセル</button>
+        <button type="submit" class="primary">保存</button>
+      </div>
+    </form>
+  </dialog>
+
+  <!-- 列名の入力 -->
+  <dialog id="colDialog">
+    <form id="colForm" novalidate>
+      <h2 id="colDialogTitle">列を追加</h2>
+      <label>列名
+        <input id="colName" type="text">
+      </label>
+      <p id="colNameError" class="field-error" hidden>列名を入力してください</p>
+      <div class="dialog-actions">
+        <button type="button" id="colCancel">キャンセル</button>
+        <button type="submit" class="primary">確定</button>
+      </div>
+    </form>
+  </dialog>
+
+  <!-- 削除の確認 -->
+  <dialog id="confirmDialog">
+    <form method="dialog">
+      <h2>削除の確認</h2>
+      <p id="confirmMessage"></p>
+      <div class="dialog-actions">
+        <button value="cancel">キャンセル</button>
+        <button value="ok" class="danger">削除する</button>
+      </div>
+    </form>
+  </dialog>
+
+  <script src="app.js"></script>
+</body>
+</html>
