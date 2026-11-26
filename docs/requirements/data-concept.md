@@ -2,7 +2,7 @@
 
 | 項目 | 内容 |
 |---|---|
-| 版 | 0.4(下書き) |
+| 版 | 0.5(下書き) |
 | 更新日 | 2026-11-26 |
 | 状態 | レビュー待ち |
 | 上位文書 | [要件定義書](requirements.md) |
@@ -46,7 +46,7 @@ sequenceDiagram
     actor U as 利用者
     participant B as 画面(ブラウザ)
     participant S as サーバー(Spring Boot)
-    participant D as データベース(MySQL)
+    participant D as データベース(PostgreSQL)
 
     Note over U,D: 起動して表示するとき(F-31)
     U->>B: アプリを開く
@@ -76,7 +76,7 @@ flowchart LR
         direction LR
         BR["ブラウザ(Chrome)<br/>React + TypeScript"]
         SV["サーバー<br/>Spring Boot(Java)"]
-        DB[("データベース<br/>MySQL")]
+        DB[("データベース<br/>PostgreSQL")]
         BR -- "API 通信" --> SV
         SV -- "読み書き" --> DB
     end
