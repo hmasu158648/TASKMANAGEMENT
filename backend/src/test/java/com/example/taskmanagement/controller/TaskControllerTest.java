@@ -25,8 +25,12 @@ import org.springframework.transaction.annotation.Transactional;
  * タスクの読み取り API のテスト。実際の PostgreSQL(docker compose で起動したもの)を使う。
  * テストごとに、トランザクションを取り消す(@Transactional)ので、データは残らない。
  * 開発用のデータが入っていても結果が変わらないよう、タイトルの先頭の「[test]」で、検索の範囲を絞る。
+ *
+ * dev プロファイルで起動した DB には、テストデータ(R__test_data.sql)が適用済みと記録されている。
+ * テストは dev プロファイルなしで動くため、そのファイルが見つからない。それをエラーにしないよう、
+ * 繰り返し型(R__)の「適用済みだが見つからない」だけを無視する。V の検証は、そのまま行う。
  */
-@SpringBootTest
+@SpringBootTest(properties = "spring.flyway.ignore-migration-patterns=repeatable:missing")
 @AutoConfigureMockMvc
 @Transactional
 class TaskControllerTest {
