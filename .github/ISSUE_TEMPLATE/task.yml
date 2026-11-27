@@ -29,5 +29,5 @@ body:
     id: branch
     attributes:
       label: ブランチ名(予定)
-      description: 「種類/イシュー番号-説明」の形式。イシュー番号は、作成後に確定する。
-      placeholder: feature/12-task-api
+      description: 「種類/#イシュー番号-短い説明」の形式。イシュー番号は、作成後に確定する。
+      placeholder: feature/#12-task-api
