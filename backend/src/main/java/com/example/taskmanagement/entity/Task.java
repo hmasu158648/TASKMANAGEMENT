@@ -6,12 +6,17 @@ import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.PrePersist;
 import jakarta.persistence.PreUpdate;
 import jakarta.persistence.Table;
 import java.time.Instant;
 import java.time.LocalDate;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 @Entity
 @Table(name = "task")
@@ -31,11 +36,13 @@ public class Task {
     @Column(nullable = false, length = 20)
     private Priority priority = Priority.MEDIUM;
 
-    @Enumerated(EnumType.STRING)
-    @Column(nullable = false, length = 20)
-    private TaskStatus status = TaskStatus.TODO;
+    /** このカードが入っている列。列を削除すると、カードも一緒に削除される(F-13)。 */
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "column_id", nullable = false)
+    @OnDelete(action = OnDeleteAction.CASCADE)
+    private BoardColumn column;
 
-    /** 同じステータス内での並び順(手動の順番)。 */
+    /** 同じ列の中での並び順(手動の順番)。 */
     @Column(nullable = false)
     private int position;
 
@@ -52,8 +59,9 @@ public class Task {
         // JPA 用
     }
 
-    public Task(String title) {
+    public Task(String title, BoardColumn column) {
         this.title = title;
+        this.column = column;
     }
 
     @PrePersist
@@ -79,8 +87,8 @@ public class Task {
     public Priority getPriority() { return priority; }
     public void setPriority(Priority priority) { this.priority = priority; }
 
-    public TaskStatus getStatus() { return status; }
-    public void setStatus(TaskStatus status) { this.status = status; }
+    public BoardColumn getColumn() { return column; }
+    public void setColumn(BoardColumn column) { this.column = column; }
 
     public int getPosition() { return position; }
     public void setPosition(int position) { this.position = position; }
