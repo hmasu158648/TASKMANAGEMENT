@@ -82,11 +82,8 @@
       "Bash(git restore .:*)",
       "Bash(chmod:*)",
       "Bash(chown:*)",
-      "Bash(kill:*)",
-      "Bash(taskkill:*)",
       "Bash(shutdown:*)",
       "Bash(reboot:*)",
-      "PowerShell(Stop-Process:*)",
       "PowerShell(Stop-Computer:*)",
       "PowerShell(Restart-Computer:*)"
     ]
