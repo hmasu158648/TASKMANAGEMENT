@@ -62,6 +62,8 @@
 ### 2.4 現在の起動手順(開発用)
 1. リポジトリ直下で、`docker compose up -d` を実行する(PostgreSQL が起動し、`healthy` になるまで待つ)。
 2. `backend/` で、`./gradlew bootRun` を実行する(サーバーが起動し、Flyway が未適用のテーブル定義を適用する)。
+   - 動作確認用のテストデータを入れるときは、`./gradlew bootRun --args='--spring.profiles.active=dev'` で起動する(`dev` プロファイル。タスクが空のときだけ、12 件が入る)。通常の起動では、入らない。
+   - API の確認方法は、[タスク API](../api/tasks.md) を参照する。
 3. 止めるときは、サーバーを終了し、`docker compose down` を実行する(データは `pgdata` に残る)。
 
 ※ README への記載は、まだ行っていない([非機能要件](non-functional.md) の R-2 を参照)。

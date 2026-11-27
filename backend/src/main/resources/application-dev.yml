@@ -1,0 +1,7 @@
+# dev プロファイル(開発用)。次のように起動したときだけ、読み込まれる:
+#   ./gradlew bootRun --args='--spring.profiles.active=dev'
+# 通常の起動(プロファイルなし)では、テストデータは入らない。
+spring:
+  flyway:
+    # 通常のマイグレーションに加えて、テストデータ(db/testdata)も適用する
+    locations: classpath:db/migration,classpath:db/testdata
