@@ -1,0 +1,23 @@
+# ローカル開発用の PostgreSQL。起動: docker compose up -d / 停止: docker compose down
+# バージョンは要件定義書 Q5(講師に確認中)が決まるまでの仮置き。
+# パスワードはローカル専用。外部に公開しないこと。
+services:
+  db:
+    image: postgres:17
+    container_name: taskmanagement-db
+    environment:
+      POSTGRES_DB: taskmanagement
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d taskmanagement"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+volumes:
+  pgdata:

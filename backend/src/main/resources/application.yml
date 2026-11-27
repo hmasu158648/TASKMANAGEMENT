@@ -2,14 +2,14 @@ spring:
   application:
     name: taskmanagement
 
-# --- DB 接続設定(一時的に無効化。DB を使うときにコメントを外す) ---
-#  datasource:
-#    url: ${DB_URL:jdbc:postgresql://localhost:5432/taskmanagement}
-#    username: ${DB_USER:postgres}
-#    password: ${DB_PASSWORD:postgres}
-#  jpa:
-#    hibernate:
-#      ddl-auto: validate   # テーブルは Flyway で作る。Hibernate は照合のみ
-#    open-in-view: false
-#  flyway:
-#    enabled: true
+  # DB 接続設定(docker-compose.yml の PostgreSQL に合わせた既定値。環境変数で上書き可能)
+  datasource:
+    url: ${DB_URL:jdbc:postgresql://localhost:5432/taskmanagement}
+    username: ${DB_USER:postgres}
+    password: ${DB_PASSWORD:postgres}
+  jpa:
+    hibernate:
+      ddl-auto: validate   # テーブルは Flyway で作る。Hibernate は照合のみ
+    open-in-view: false
+  flyway:
+    enabled: true
