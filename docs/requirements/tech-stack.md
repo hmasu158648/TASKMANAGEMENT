@@ -20,7 +20,7 @@
 |---|---|---|
 | サーバー | Java + Spring Boot | API(画面からの要求を受けて、データベースを操作する部分)を作る |
 | 画面 | React | Next.js は使わない(対象外)。React だけで、1画面のアプリを作る |
-| データベース | PostgreSQL | 自分の PC に PostgreSQL を入れて、localhost で運用する |
+| データベース | PostgreSQL | Docker Compose で PostgreSQL を起動し、localhost で運用する |
 
 ## 2. 合わせて選んだツール
 
@@ -54,7 +54,7 @@
 ### 2.3 開発・運用の環境
 | 区分 | 採用 | 選んだ理由 |
 |---|---|---|
-| PostgreSQL の起動 | 自分の PC に導入(Docker Compose は任意) | PC に直接入れる方法が、最も簡単。Docker が使える場合は、Docker Compose でも起動できる |
+| PostgreSQL の起動 | Docker Compose(リポジトリ直下の `docker-compose.yml`) | `docker compose up -d` で起動できる。PC に直接インストールする方法でも可(接続先は同じ localhost:5432) |
 | バックアップ | `pg_dump`(PostgreSQL の標準ツール) | データベースを、ファイルに書き出せる |
 | バージョン管理 | Git + GitHub | すでに使っている |
 | 開発のときの通信 | Vite の開発サーバーから、Spring Boot の API へ中継する | 画面(例:5173 番)とサーバー(例:8080 番)を、別々に動かしながら開発できる。基本設計で確定する |
