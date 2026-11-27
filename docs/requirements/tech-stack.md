@@ -2,8 +2,8 @@
 
 | 項目 | 内容 |
 |---|---|
-| 版 | 0.6(下書き) |
-| 更新日 | 2026-11-26 |
+| 版 | 0.7(下書き) |
+| 更新日 | 2026-11-27 |
 | 状態 | レビュー待ち |
 | 上位文書 | [要件定義書](requirements.md) |
 
@@ -20,7 +20,7 @@
 |---|---|---|
 | サーバー | Java + Spring Boot | API(画面からの要求を受けて、データベースを操作する部分)を作る |
 | 画面 | React | Next.js は使わない(対象外)。React だけで、1画面のアプリを作る |
-| データベース | PostgreSQL | Docker Compose で PostgreSQL を起動し、localhost で運用する |
+| データベース | PostgreSQL(**17 を仮採用**。バージョンは [Q5](requirements.md) で講師に確認中) | Docker Compose で PostgreSQL を起動し、localhost で運用する |
 
 ## 2. 合わせて選んだツール
 
@@ -45,19 +45,26 @@
 | ビルド・依存管理 | Gradle(9.9.1、ラッパー `gradlew` を同梱) | 講師の指定。ひな形は `backend/` に作成済み(Spring Initializr は使わず、手書きで作成) |
 | Web API | Spring Web(REST、JSON 形式) | Spring Boot の標準 |
 | DB アクセス | Spring Data JPA(Hibernate) | Spring Boot の標準的な方法。SQL を直接書く量を減らせる |
-| DB の接続 | PostgreSQL JDBC ドライバー | PostgreSQL に接続するための部品 |
+| DB の接続 | PostgreSQL JDBC ドライバー。接続先は `application.yml` に設定済み(`localhost:5432`、DB 名 `taskmanagement`) | PostgreSQL に接続するための部品。接続先とパスワードは、環境変数(`DB_URL`、`DB_USER`、`DB_PASSWORD`)で上書きできる。既定のパスワードは、ローカル開発専用 |
 | 入力チェック | Bean Validation(Spring Boot Starter Validation) | タイトル必須などのチェック(F-04)を、サーバー側でも行う |
-| テーブルの作成・変更 | Flyway | テーブルの定義を、ファイルで管理できる。起動時に自動で適用される |
+| テーブルの作成・変更 | Flyway(定義は `backend/src/main/resources/db/migration/` に `V1__init.sql`、`V2__create_task.sql` の形式で置く) | テーブルの定義を、ファイルで管理できる。起動時に、未適用のものだけが自動で適用される。適用済みのファイルは書き換えず、変更は新しい番号のファイルで追加する。Hibernate は `ddl-auto: validate` とし、テーブルは作らず、エンティティとの一致を確認するだけにしている |
 | テスト | JUnit 5 + Spring Boot Test | Spring Boot に標準で含まれる |
 | 設定の管理 | `application.yml` | 接続先などを、プログラムと分けて管理する |
 
 ### 2.3 開発・運用の環境
 | 区分 | 採用 | 選んだ理由 |
 |---|---|---|
-| PostgreSQL の起動 | Docker Compose(リポジトリ直下の `docker-compose.yml`) | `docker compose up -d` で起動できる。PC に直接インストールする方法でも可(接続先は同じ localhost:5432) |
+| PostgreSQL の起動 | Docker Compose(リポジトリ直下の `docker-compose.yml`、イメージ `postgres:17`、データは名前付きボリューム `pgdata` に保存) | `docker compose up -d` で起動できる。PC に直接インストールする方法でも可(接続先は同じ localhost:5432) |
 | バックアップ | `pg_dump`(PostgreSQL の標準ツール) | データベースを、ファイルに書き出せる |
 | バージョン管理 | Git + GitHub | すでに使っている |
 | 開発のときの通信 | Vite の開発サーバーから、Spring Boot の API へ中継する | 画面(例:5173 番)とサーバー(例:8080 番)を、別々に動かしながら開発できる。基本設計で確定する |
+
+### 2.4 現在の起動手順(開発用)
+1. リポジトリ直下で、`docker compose up -d` を実行する(PostgreSQL が起動し、`healthy` になるまで待つ)。
+2. `backend/` で、`./gradlew bootRun` を実行する(サーバーが起動し、Flyway が未適用のテーブル定義を適用する)。
+3. 止めるときは、サーバーを終了し、`docker compose down` を実行する(データは `pgdata` に残る)。
+
+※ README への記載は、まだ行っていない([非機能要件](non-functional.md) の R-2 を参照)。
 
 ## 3. 検討した代替案
 
