@@ -9,7 +9,7 @@
 const { execFileSync } = require('child_process');
 const path = require('path');
 
-const BRANCH_RE = /^(feature|fix|docs|chore|refactor)\/[0-9]+-[a-z0-9]+(-[a-z0-9]+)*$/;
+const BRANCH_RE = /^(feature|fix|docs|chore|refactor)\/#[0-9]+-[a-z0-9]+(-[a-z0-9]+)*$/;
 const PROTECTED = ['main', 'master'];
 const COMMIT_LIKE = ['commit', 'cherry-pick', 'revert', 'am'];
 
@@ -152,9 +152,9 @@ function main() {
     if (created !== null && created !== undefined && !BRANCH_RE.test(created)) {
       block(
         `ブランチ名「${created}」は、ルールに合いません。` +
-          '「種類/イシュー番号-説明」(例: feature/12-task-api)の形式にしてください。' +
+          '「種類/#イシュー番号-短い説明」(例: feature/#12-task-api)の形式にしてください。' +
           '種類は feature / fix / docs / chore / refactor、説明は半角の小文字・数字・ハイフンです。' +
-          '先に、イシューを作成してください。'
+          '先に、GitHub のイシューを作成する(または既存のイシューを確認する)必要があります。'
       );
     }
 
